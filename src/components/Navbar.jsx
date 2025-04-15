@@ -11,7 +11,7 @@ const Navbar = () => {
           <h1 className="text-2xl font-bold">MyShop</h1>
         </Link>
         <div className="space-x-6">
-          <Link to="/products" className="text-white hover:text-yellow-300 transition">Products</Link>
+          <Link to="/login" className="text-white hover:text-yellow-300 transition">Login</Link>
           <Link to="/cart" className="text-white hover:text-yellow-300 transition px-6 py-3 bg-blue-800 rounded-xl">Cart <sup>{product?.length}</sup></Link>
         </div>
       </div>

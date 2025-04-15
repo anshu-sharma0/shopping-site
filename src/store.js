@@ -2,7 +2,7 @@ import { createContext, useState } from 'react';
 
 const ProductContext = createContext({
   product: [],
-  setProduct: () => {},
+  setProduct: () => { },
 });
 
 const ProductProvider = ({ children }) => {

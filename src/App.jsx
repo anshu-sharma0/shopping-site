@@ -31,7 +31,7 @@ function Home() {
     const updatedCart = product.filter((p) => p.id !== item.id);
     setProduct(updatedCart);
   };
-  
+
   return (
     <div className="p-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -58,29 +58,29 @@ function Home() {
               <div className="mt-auto flex items-center justify-between">
                 <p className="text-xl font-bold text-indigo-600">${item?.price}</p>
                 <div className="flex items-center text-amber-400">
-                <StarRating rating={item?.rating?.rate} />
-                <span className="text-xs text-gray-500 ml-4">({item?.rating?.rate})</span>
+                  <StarRating rating={item?.rating?.rate} />
+                  <span className="text-xs text-gray-500 ml-4">({item?.rating?.rate})</span>
                 </div>
               </div>
             </div>
 
             <div className="px-4 pb-4">
-  {product.find((p) => p.id === item.id) ? (
-    <button
-      className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg font-medium transition-colors duration-300"
-      onClick={() => handleRemoveFromCart(item)}
-    >
-      Remove from Cart
-    </button>
-  ) : (
-    <button
-      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg font-medium transition-colors duration-300"
-      onClick={() => handleAddToCart(item)}
-    >
-      Add to Cart
-    </button>
-  )}
-</div>
+              {product.find((p) => p.id === item.id) ? (
+                <button
+                  className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg font-medium transition-colors duration-300"
+                  onClick={() => handleRemoveFromCart(item)}
+                >
+                  Remove from Cart
+                </button>
+              ) : (
+                <button
+                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg font-medium transition-colors duration-300"
+                  onClick={() => handleAddToCart(item)}
+                >
+                  Add to Cart
+                </button>
+              )}
+            </div>
 
           </div>
         ))}
