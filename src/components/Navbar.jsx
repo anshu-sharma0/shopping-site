@@ -1,10 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { ProductContext } from '../store';
 import { ShoppingBag } from 'lucide-react';
-
+import { useAuth0 } from '@auth0/auth0-react';
+import Avatar from './Avatar';
+import useProductStore from '../zustand/store/productStore';
 const Navbar = () => {
-  const { product } = useContext(ProductContext);
+  const {
+    logout,
+    isAuthenticated,
+  } = useAuth0();
+  const { product, user } = useProductStore();
+
   return (
     <nav className="bg-blue-600 shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -13,12 +19,16 @@ const Navbar = () => {
             <h1 className="text-2xl font-extrabold tracking-wide">MyShop</h1>
           </Link>
           <div className="flex items-center gap-6">
-            <Link
-              to="/login"
-              className="text-white text-sm font-medium hover:text-yellow-300 transition-colors"
-            >
-              Login
-            </Link>
+            {user ? (
+              <Avatar user={user} logout={logout} />
+            ) : (
+              <Link
+                to="/login"
+                className="text-white text-sm font-medium hover:text-yellow-300 transition-colors"
+              >
+                Login
+              </Link>
+            )}
             <Link to="/cart" className="relative group">
               <div className="flex items-center gap-2 bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-full transition duration-300 shadow-md">
                 <ShoppingBag className="w-5 h-5" />

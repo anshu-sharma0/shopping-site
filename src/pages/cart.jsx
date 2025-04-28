@@ -1,30 +1,10 @@
-import React, { useContext } from 'react';
-import { ProductContext } from '../store';
+import React from 'react';
 import { ShoppingCart, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import useProductStore from '../zustand/store/productStore';
 
 const Cart = () => {
-  const { product, setProduct } = useContext(ProductContext);
-
-  const handleRemoveCart = (itemToRemove) => {
-    setProduct(product.filter((item) => item.id !== itemToRemove.id));
-  };
-
-  const incrementQty = (itemId) => {
-    const updated = product.map((item) =>
-      item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item
-    );
-    setProduct(updated);
-  };
-
-  const decrementQty = (itemId) => {
-    const updated = product.map((item) =>
-      item.id === itemId
-        ? { ...item, quantity: item.quantity > 1 ? item.quantity - 1 : 1 }
-        : item
-    );
-    setProduct(updated);
-  };
+  const {product, increaseQuantity, decreaseQuantity, removeItem} = useProductStore();
 
   const finalPrice = product.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
 
@@ -75,7 +55,8 @@ const Cart = () => {
                     <img
                       src={item.image}
                       alt={item.title}
-                      className="w-14 h-14 object-contain bg-white rounded-lg border"
+                      className="w-14 h-14 object-contain bg-white"
+                      style={{ mixBlendMode: 'multiply' }}
                     />
                     <span className="font-medium text-gray-800 line-clamp-2 max-w-[200px]">{item.title}</span>
                   </td>
@@ -86,12 +67,12 @@ const Cart = () => {
                   <td className="p-2">
                     <div className="flex items-center justify-center gap-2">
                       <button
-                        onClick={() => decrementQty(item.id)}
+                        onClick={() => decreaseQuantity(item.id)}
                         className="px-2 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded"
                       >−</button>
                       <span className="px-2 font-semibold">{item.quantity}</span>
                       <button
-                        onClick={() => incrementQty(item.id)}
+                        onClick={() => increaseQuantity(item.id)}
                         className="px-2 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded"
                       >+</button>
                     </div>
@@ -104,8 +85,8 @@ const Cart = () => {
                       onClick={() => handleRemoveCart(item)}
                       className="text-sm text-red-600 hover:text-red-800 font-medium"
                     > */}
-                    <Trash2 onClick={() => handleRemoveCart(item)}
-                      className="text-sm text-red-600 hover:text-red-800 font-medium" />
+                    <Trash2 onClick={() => removeItem(item?.id)}
+                      className="text-sm text-red-600 hover:text-red-800 font-medium cursor-pointer" />
                     {/* </button> */}
                   </td>
                 </tr>

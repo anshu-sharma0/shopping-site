@@ -1,9 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
+import useProductStore from "../zustand/store/productStore";
 
 const PrivateRoute = () => {
-    const isAuthenticated = localStorage.getItem("token");
 
-    return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+    const { user } = useProductStore();
+    return user ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;
