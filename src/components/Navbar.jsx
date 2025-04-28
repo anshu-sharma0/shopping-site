@@ -5,11 +5,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import Avatar from './Avatar';
 import useProductStore from '../zustand/store/productStore';
 const Navbar = () => {
-  const {
-    logout,
-    isAuthenticated,
-  } = useAuth0();
-  const { product, user } = useProductStore();
+  const { product, user, clearUser } = useProductStore();
 
   return (
     <nav className="bg-blue-600 shadow-md sticky top-0 z-50">
@@ -20,7 +16,7 @@ const Navbar = () => {
           </Link>
           <div className="flex items-center gap-6">
             {user ? (
-              <Avatar user={user} logout={logout} />
+              <Avatar user={user} clearUser={clearUser} />
             ) : (
               <Link
                 to="/login"

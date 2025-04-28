@@ -1,6 +1,6 @@
 import axios from 'axios';
 import './App.css';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import useProductStore from './zustand/store/productStore';
 import { StarRating } from './components/StarRating';
 

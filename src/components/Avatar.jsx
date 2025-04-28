@@ -1,6 +1,11 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import React, { useState, useEffect, useRef } from 'react';
 
-const Avatar = ({user, logout}) => {
+const Avatar = ({user, clearUser}) => {
+    const {
+        logout,
+    } = useAuth0();
+
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
     const buttonRef = useRef(null);
@@ -50,7 +55,7 @@ const Avatar = ({user, logout}) => {
                     </div>
 
                     <div className="py-1">
-                        <button onClick={logout} className="block px-4 w-full py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Log out</button>
+                        <button onClick={() => {logout(); clearUser()}} className="block px-4 w-full py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Log out</button>
                     </div>
                 </div>
             )}
