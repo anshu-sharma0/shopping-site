@@ -7,6 +7,8 @@ import useProductStore from '../zustand/store/productStore';
 const Navbar = () => {
   const { product, user, clearUser } = useProductStore();
 
+  const isAuthenticated = user || localStorage.getItem('token');
+
   return (
     <nav className="bg-blue-600 shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15,7 +17,10 @@ const Navbar = () => {
             <h1 className="text-2xl font-extrabold tracking-wide">MyShop</h1>
           </Link>
           <div className="flex items-center gap-6">
-            {user ? (
+          <Link to="/products" className="text-white hover:text-yellow-300 transition-colors">
+            <h1 className="">Products</h1>
+          </Link>
+            {isAuthenticated  ? (
               <Avatar user={user} clearUser={clearUser} />
             ) : (
               <Link

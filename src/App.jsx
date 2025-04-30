@@ -8,10 +8,14 @@ function Home() {
   const { product, addItem, removeItem, allProduct, setAllProduct } = useProductStore();
 
   useEffect(() => {
-    axios.get('https://fakestoreapi.com/products')
-      .then((response) => setAllProduct(response?.data))
-      .catch((error) => console.error('Error fetching data:', error));
-  }, []);
+    if (allProduct.length === 0) {
+      axios.get('https://fakestoreapi.com/products')
+        .then((response) => {
+          setAllProduct(response?.data);
+        })
+        .catch((error) => console.error('Error fetching data:', error));
+    }
+  }, [allProduct, setAllProduct]);
 
   const handleAddToCart = (item) => {
     addItem(item);
@@ -21,6 +25,10 @@ function Home() {
     removeItem(item.id);
   };
 
+  if (!allProduct || allProduct.length === 0) {
+    return <p>Loading products...</p>;
+  }
+
   return (
     <main className="min-h-screen bg-gray-50 px-6 py-10">
       <section className="max-w-[100rem] mx-auto">
@@ -29,7 +37,7 @@ function Home() {
             Discover Our Latest Products
           </h2>
           <p className="mt-2 text-gray-500 text-sm sm:text-base">
-            Handpicked just for you – shop the trendiest & best-rated items now.
+            Handpicked just for you - shop the trendiest & best-rated items now.
           </p>
         </header>
 

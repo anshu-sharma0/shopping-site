@@ -25,6 +25,12 @@ const Avatar = ({user, clearUser}) => {
         }
     };
     
+    const handleLogout = () => {
+        clearUser();
+        // logout();
+        localStorage.clear();
+    }
+    
     useEffect(() => {
         document.addEventListener('click', handleClickOutside);
         return () => {
@@ -39,7 +45,7 @@ const Avatar = ({user, clearUser}) => {
                 ref={buttonRef}
                 onClick={handleToggle}
                 className="w-10 h-10 rounded-full cursor-pointer"
-                src={user?.picture}
+                src={user?.picture || 'https://via.placeholder.com/150'}
                 alt="User dropdown"
             />
 
@@ -55,7 +61,7 @@ const Avatar = ({user, clearUser}) => {
                     </div>
 
                     <div className="py-1">
-                        <button onClick={() => {logout(); clearUser()}} className="block px-4 w-full py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Log out</button>
+                        <button onClick={handleLogout} className="block px-4 w-full py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Log out</button>
                     </div>
                 </div>
             )}

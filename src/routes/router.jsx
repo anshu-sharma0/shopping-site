@@ -4,6 +4,8 @@ import Home from "../App";
 import PrivateRoute from "./PrivateRoute";
 import Cart from "../pages/cart";
 import Login from "../components/login";
+import Form from "../components/form";
+import Products from "../components/products";
 
 export const router = createBrowserRouter([
   {
@@ -13,6 +15,14 @@ export const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/form",
+        element: <Form />,
+      },
+      {
+        path: "/products",
+        element: <Products />,
       },
       {
         element: <PrivateRoute />,

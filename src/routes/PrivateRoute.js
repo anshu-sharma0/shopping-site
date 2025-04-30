@@ -4,7 +4,8 @@ import useProductStore from "../zustand/store/productStore";
 const PrivateRoute = () => {
 
     const { user } = useProductStore();
-    return user ? <Outlet /> : <Navigate to="/login" />;
+    const isAuthenticated = user || localStorage.getItem("token");
+    return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;
