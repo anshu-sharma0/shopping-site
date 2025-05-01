@@ -1,28 +1,36 @@
 import axios from 'axios';
 import '.././App.css';
-import { useEffect, useState } from 'react';
-import useProductStore from '../zustand/store/productStore';
-import { StarRating } from './StarRating';
+import { useQuery } from '@tanstack/react-query';
 
 function Products() {
-    const { product, addItem, removeItem, allProduct, setAllProduct } = useProductStore();
+    const url = process.env.REACT_APP_SERVER;
+    const token = localStorage.getItem('token');
 
-    const [products, setProducts] = useState([]);
-
-    useEffect(() => {
-        const url = process.env.REACT_APP_SERVER + '/product/all';
-        axios.get(url)
-            .then((response) => setProducts(response.data))
-            .catch((error) => console.error('Error fetching data:', error));
-    }, []);
-
-    const handleAddToCart = (item) => {
-        addItem(item);
+    const fetchProducts = async () => {
+        const response = await axios.get(url + '/product/all');
+        return response.data;
     };
 
-    const handleRemoveFromCart = (item) => {
-        removeItem(item.id);
-    };
+    const { data: products, isLoading, isError, error } = useQuery({
+        queryKey: ['products'],
+        queryFn: fetchProducts,
+    });
+
+    const handleToCart = async (item) => {
+        const response = await axios.post(url + '/cart', {
+            productId: item.id,
+            quantity: 1,
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+
+    console.log({products})
+
+    if (isLoading) return <div className="text-center py-10">Loading...</div>;
+    if (isError) return <div className="text-center py-10 text-red-600">Error: {error.message}</div>;
 
     return (
         <main className="min-h-screen bg-gray-50 px-6 py-10">
@@ -37,11 +45,8 @@ function Products() {
                 </header>
 
                 <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                    {products.length > 0 && products.map((item) => {
-                        const isInCart = product.some((p) => p.id === item.id);
-                        const itemInCart = product.find((p) => p.id === item.id);
-                        const quantity = itemInCart ? itemInCart.quantity : 0;
-                        console.log({ item })
+                    {products.length > 0 && products?.map((item) => {
+
                         return (
                             <div
                                 key={item.id}
@@ -69,19 +74,14 @@ function Products() {
                                     <div className="mt-auto flex justify-between items-center">
                                         <span className="text-lg font-bold text-indigo-600">${item.price.toFixed(2)}</span>
                                     </div>
-
                                 </div>
 
                                 <div className="p-4 pt-0">
                                     <button
-                                        onClick={() => isInCart ? handleRemoveFromCart(item) : handleAddToCart(item)}
-                                        className={`w-full py-2 px-4 rounded-lg font-semibold transition-colors duration-300
-                                            ${isInCart
-                                                ? 'bg-red-600 hover:bg-red-700 text-white'
-                                                : 'bg-indigo-600 hover:bg-indigo-700 text-white'}
-                                            `}
+                                        className={`w-full py-2 px-4 rounded-lg font-semibold transition-colors duration-300 bg-blue-600 hover:bg-blue-800 text-white`}
+                                        onClick={() => handleToCart(item)}
                                     >
-                                        {isInCart ? `Remove from Cart (x${quantity})` : 'Add to Cart'}
+                                        Add to Cart
                                     </button>
                                 </div>
                             </div>

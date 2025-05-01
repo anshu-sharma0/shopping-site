@@ -5,12 +5,13 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './routes/router';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const queryClient = new QueryClient();
 
-const domain = 'dev-sitmsvuahiop7vn7.us.auth0.com';
-const clientId = '0vEjheh8K8xeTOIbnJDTvtNGb1mVU2QY';
+const domain = process.env.REACT_APP_AUTH0_DOMAIN;
+const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
 
 root.render(
   <React.StrictMode>
@@ -23,6 +24,7 @@ root.render(
     >
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </Auth0Provider>
   </React.StrictMode>

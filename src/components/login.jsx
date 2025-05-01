@@ -14,7 +14,7 @@ function App() {
 
   const {
     register,
-    handleSubmit, 
+    handleSubmit,
     formState: { errors },
   } = useForm()
 
@@ -25,10 +25,23 @@ function App() {
   const handleGoogleLogin = (e) => {
     e.preventDefault();
     loginWithRedirect({
-      connection: 'google-oauth2',
-      prompt: 'select_account',
-      max_age: 0,
-      ui_locales: 'en',
+      authorizationParams: {
+        connection: 'google-oauth2'
+      },
+      redirectUri: window.location.origin,
+      prompt: 'select_account', // Optional: Forces Google to show the account selection screen (skip login if already authenticated)
+    }).catch(error => {
+      console.error("Google login error:", error);
+    });
+  };
+  const handleGithubLogin = (e) => {
+    e.preventDefault();
+    loginWithRedirect({
+      authorizationParams: {
+        connection: 'github'
+      },
+      redirectUri: window.location.origin, 
+      prompt: 'select_account', // Optional: Forces Google to show the account selection screen (skip login if already authenticated)
     }).catch(error => {
       console.error("Google login error:", error);
     });
@@ -46,7 +59,7 @@ function App() {
 
   const onSubmit = async (data) => {
     const url = `${process.env.REACT_APP_SERVER}/user/login`;
-  
+
     try {
       const response = await fetch(url, {
         method: "POST",
@@ -58,15 +71,15 @@ function App() {
           password: data.password
         })
       });
-  
+
       const result = await response.json();
-  
+
       if (!response.ok) {
         throw new Error(result.message || "Login failed");
       }
-  
+
       localStorage.setItem("token", result.access_token);
-      navigate('/');      
+      navigate('/');  // Redirect to home page after successful login
     } catch (error) {
       console.error("Error during login:", error.message);
     }
@@ -86,7 +99,7 @@ function App() {
               type="email"
               className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               placeholder="Enter your email"
-              {...register("email", {required: "Email is required"})}
+              {...register("email", { required: "Email is required" })}
             />
             <p className='text-red-500 text-sm pt-1'>{errors.email && errors.email?.message}</p>
           </div>
@@ -124,6 +137,16 @@ function App() {
                 G
               </span>
               Continue with Google
+            </button>
+            <button
+              type="button"
+              onClick={handleGithubLogin}
+              className="w-full py-2 bg-white border border-gray-300 text-gray-700 font-semibold rounded-md hover:bg-gray-50 transition duration-200 flex items-center justify-center"
+            >
+              <span className="mr-2">
+                G
+              </span>
+              Continue with Github
             </button>
           </div>
         )}

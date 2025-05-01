@@ -30,6 +30,18 @@ const Navbar = () => {
                 Login
               </Link>
             )}
+            <Link to="/localCart" className="relative group">
+              <div className="flex items-center gap-2 bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-full transition duration-300 shadow-md">
+                <ShoppingBag className="w-5 h-5" />
+                <span className="text-sm font-medium">Local Cart</span>
+
+                {product?.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-yellow-300 text-black text-xs font-bold px-2 py-0.5 rounded-full shadow-md animate-pulse">
+                    {product.length}
+                  </span>
+                )}
+              </div>
+            </Link>
             <Link to="/cart" className="relative group">
               <div className="flex items-center gap-2 bg-blue-800 hover:bg-blue-900 text-white px-4 py-2 rounded-full transition duration-300 shadow-md">
                 <ShoppingBag className="w-5 h-5" />
