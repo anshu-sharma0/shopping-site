@@ -7,6 +7,7 @@ import Login from "../components/login";
 import Form from "../components/form";
 import Products from "../components/products";
 import LocalCart from "../pages/localCart";
+import ProductDetail from "../components/productDetail";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: "/products",
         element: <Products />,
+      },
+      {
+        path: "/product/:id",
+        element: <ProductDetail />,
       },
       {
         path: "/localCart",
